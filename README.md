@@ -1,6 +1,18 @@
 # DonationPlatform
 This is an open-source project of donate platform API built on Smart Contract &amp; Python API.
 
+## Idea description
+The idea of this project is to create a donation platform where people can donate money to a specific cause.
+The platform will be built on top of a smart contract that will be deployed on the Ethereum blockchain.
+The platform will have a web interface where users can see all the causes and donate to them.
+The platform will have a backend API that will be used by the web interface to get all the data from the blockchain.
+
+### Basic workflow
+1. User creates a project with a goal - funds that he/she wants to collect. And start to promote his project. 
+2. Donors connect their wallets to the UI and send money to project
+3. When goal is achieved, project closes and all funds that were received sends to the Project owner wallet (it can be not a creator of project)
+4. Also, project can be closed in case if project's expiration time in ended. In this case, Project creator can decide - send money to the target wallet or send them back to the donors. 
+
 
 ## Project Structure
 
