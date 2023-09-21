@@ -19,7 +19,7 @@ The platform will have a backend API that will be used by the web interface to g
 1. Root dir - Fast API server
 2. `./contracts` - Solidity Smart Contract
 3. `./models` - Main API models and backend logic
-4. ./main.py - Fast API server entry point with all project routes
+4. `./main.py` - Fast API server entry point with all project routes
 
 
 ## How to run
