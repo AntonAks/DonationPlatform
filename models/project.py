@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 import json
 from settings import contract, w3, OWNER_ADDRESS, PRIVATE_KEY
+from hexbytes import HexBytes
 
 
 class ProjectCreateRequest(BaseModel):
@@ -13,7 +14,7 @@ class ProjectCreateRequest(BaseModel):
 
 class ProjectCreateResponse(BaseModel):
     message: str
-    project_id: int
+    transaction: str
 
 
 class ProjectHelper:
@@ -47,11 +48,9 @@ class ProjectHelper:
 
         # Wait for transaction receipt
         tx_receipt = w3.eth.wait_for_transaction_receipt(send_tx)
-        # print(tx_receipt) # Optional
-
+        hex_bytes = tx_receipt.get('transactionHash')
         return {"message": "Project created",
-                "project_id": 1,
-                "tx_receipt": tx_receipt}
+                "transaction": hex_bytes.hex()}
 
     @staticmethod
     def close_project(project_id: int):
@@ -71,11 +70,10 @@ class ProjectHelper:
 
         # Wait for transaction receipt
         tx_receipt = w3.eth.wait_for_transaction_receipt(send_tx)
-        # print(tx_receipt) # Optional
+        hex_bytes = tx_receipt.get('transactionHash')
 
         return {"message": "Project closed",
-                "project_id": project_id,
-                "tx_receipt": tx_receipt}
+                "transaction": hex_bytes.hex()}
 
     @staticmethod
     def withdraw_to_project_owner(project_id: int):
@@ -95,11 +93,10 @@ class ProjectHelper:
 
         # Wait for transaction receipt
         tx_receipt = w3.eth.wait_for_transaction_receipt(send_tx)
-        # print(tx_receipt) # Optional
+        hex_bytes = tx_receipt.get('transactionHash')
 
         return {"message": "All funds withdrawn to project owner",
-                "project_id": project_id,
-                "tx_receipt": tx_receipt}
+                "transaction": hex_bytes.hex()}
 
     @staticmethod
     def get_owner():
@@ -111,4 +108,13 @@ class ProjectHelper:
 
     @staticmethod
     def get_project(project_id: int):
-        return contract.functions.getProject(project_id).call()
+        project_data = contract.functions.getProject(project_id).call()
+        _project = dict()
+        _project['project_id'] = project_data[0]
+        _project['project_title'] = project_data[1]
+        _project['project_owner'] = project_data[2]
+        _project['project_goal'] = project_data[3]
+        _project['project_expiration'] = project_data[4]
+        _project['project_balance'] = project_data[5]
+        _project['project_is_open'] = project_data[6]
+        return _project
