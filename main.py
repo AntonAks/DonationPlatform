@@ -1,12 +1,22 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from models.project import ProjectCreateRequest, ProjectCreateResponse, ProjectHelper
+from fastapi.templating import Jinja2Templates
+
 
 app = FastAPI()
 
 
+templates = Jinja2Templates(directory="templates")
+
 @app.get("/")
-async def index():
-    return {"message": "Hello World"}
+async def index(request: Request):
+
+    projects_ids = ProjectHelper.get_projects_ids()
+    projects_for_template = []
+
+    for projects_id in projects_ids[:5]:
+        projects_for_template.append(ProjectHelper.get_project(projects_id))
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.post("/create-project/", response_model=ProjectCreateResponse)
@@ -44,12 +54,3 @@ async def withdraw_to_project_owner(project_id: int):
     response = ProjectHelper.withdraw_to_project_owner(project_id)
     return response
 
-
-
-# {
-#   "title": "New Project",
-#   "description": "The new cool project",
-#   "owner": "0xC162C51C1735E6e29CC7f932AADb0FeEB20a369D",
-#   "date_expiration": 1697627008,
-#   "project_goal": 100000
-# }
