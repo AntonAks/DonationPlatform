@@ -108,4 +108,13 @@ class ProjectHelper:
 
     @staticmethod
     def get_project(project_id: int):
-        return contract.functions.getProject(project_id).call()
+        project_data = contract.functions.getProject(project_id).call()
+        _project = dict()
+        _project['project_id'] = project_data[0]
+        _project['project_title'] = project_data[1]
+        _project['project_owner'] = project_data[2]
+        _project['project_goal'] = project_data[3]
+        _project['project_expiration'] = project_data[4]
+        _project['project_balance'] = project_data[5]
+        _project['project_is_open'] = project_data[6]
+        return _project

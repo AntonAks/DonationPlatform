@@ -3,13 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Donation Platform</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 <body>
 
+<div class="container">
+    <div class="row">
+        <p class="card-text">Total Count: {{total_count}}</p>
+        {% for project in data %}
+        <div class="card border-light m-2" style="max-width: 24rem;">
+            <h5 class="card-title m-2">{{project.project_title}}</h5>
+            <div class="card-body">
+                <h5 class="card-title">Owner: {{project.project_owner}}</h5>
+                <p class="card-text">Goal: {{project.project_goal}} ETH</p>
+                <p class="card-text">Expiration: {{project.project_expiration}}</p>
+                <p class="card-text">Balance: {{project.project_balance}} ETH</p>
+                <p class="card-text">Is Open: {{project.project_is_open}}</p>
 
-
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
@@ -23,7 +39,6 @@
         crossorigin="anonymous"></script>
 
 </body>
-
 
 
 </html>

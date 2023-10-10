@@ -3,10 +3,16 @@ from models.project import ProjectCreateRequest, ProjectCreateResponse, ProjectH
 from fastapi.templating import Jinja2Templates
 
 
-app = FastAPI()
+app = FastAPI(
+    title="Donation platform API",
+    description="Donation platform REST API on Ethereum blockchain",
+    version="1.0.0",
+    openapi_url="/openapi.json",  # Customize the URL of your OpenAPI schema
+)
 
 
 templates = Jinja2Templates(directory="templates")
+
 
 @app.get("/")
 async def index(request: Request):
@@ -16,7 +22,8 @@ async def index(request: Request):
 
     for projects_id in projects_ids[:5]:
         projects_for_template.append(ProjectHelper.get_project(projects_id))
-    return templates.TemplateResponse("index.html", {"request": request})
+
+    return templates.TemplateResponse("index.html", {"request": request, "data": projects_for_template})
 
 
 @app.post("/create-project/", response_model=ProjectCreateResponse)
@@ -54,3 +61,6 @@ async def withdraw_to_project_owner(project_id: int):
     response = ProjectHelper.withdraw_to_project_owner(project_id)
     return response
 
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
